@@ -90,8 +90,6 @@ System.getenv("GITHUB_REPOSITORY")?.let {
         publications.withType(MavenPublication::class) {
             groupId = publishedGroupId
             version = libraryVersion
-
-            artifact(tasks["javadocJar"])
         }
 
         repositories {
