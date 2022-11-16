@@ -92,6 +92,6 @@ System.getenv("GITHUB_REPOSITORY")?.let {
     }
 }
 
-signing {
-    sign(publishing.publications["mavenJava"])
-}
+//signing {
+//    sign(publishing.publications["mavenJava"])
+//}
