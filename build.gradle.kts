@@ -6,9 +6,6 @@ plugins {
     signing
 }
 
-group = "com.metaplex.borsh"
-version = "0.1.0"
-
 repositories {
     google()
     mavenCentral()
@@ -51,7 +48,11 @@ kotlin {
         }
         val jvmTest by getting
         val jsMain by getting
-        val jsTest by getting
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
         val androidMain by getting {
             kotlin.srcDir("src/commonJvmAndroid/kotlin")
             dependencies {
@@ -74,53 +75,18 @@ android {
     namespace = "$group.${rootProject.name}"
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "metaplex"
-            from(components["kotlin"])
-            versionMapping {
-                usage("java-api") {
-                    fromResolutionOf("runtimeClasspath")
-                }
-                usage("java-runtime") {
-                    fromResolutionResult()
-                }
-            }
-            pom {
-                name.set("Borsh Kotlin Serialization Format")
-                description.set("A kotlinx-serialization format for the Borsh specification")
-                url.set("http://www.github.com/metaplex-foundation/kborsh")
-//                properties.set(mapOf(
-//                    "myProp" to "value",
-//                    "prop.with.dots" to "anotherValue"
-//                ))
-//                licenses {
-//                    license {
-//                        name.set("The Apache License, Version 2.0")
-//                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-//                    }
-//                }
-                developers {
-                    developer {
-                        id.set("Funkatronics")
-                        name.set("Marco Martinez")
-                        email.set("marco@metaplex.com")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/metaplex-foundation/kborsh.git")
-                    developerConnection.set("scm:git:ssh://github.com/metaplex-foundation/kborsh.git")
-                    url.set("http://github.com/metaplex-foundation/kborsh")
-                }
-            }
-        }
-    }
-    repositories {
-        maven("https://maven.pkg.github.com/metaplex-foundation/kborsh") {
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+allprojects {
+    group = "com.metaplex.borsh"
+    version = System.getenv("GITHUB_REF")?.split('/')?.last() ?: "development"
+}
+
+System.getenv("GITHUB_REPOSITORY")?.let {
+    publishing {
+        repositories {
+            maven {
+                name = "github"
+                url = uri("https://maven.pkg.github.com/$it")
+                credentials(PasswordCredentials::class)
             }
         }
     }
