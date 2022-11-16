@@ -12,6 +12,7 @@ val libraryVersion = System.getenv("GITHUB_REF")?.split('/')?.last() ?: "develop
 
 repositories {
     google()
+    jcenter()
     mavenCentral()
 }
 
@@ -21,15 +22,13 @@ kotlin {
             kotlinOptions.jvmTarget = "1.8"
         }
         testRuns["test"].executionTask.configure {
-            useJUnitPlatform()
+            useJUnit()
         }
     }
-    js(BOTH) {
-        browser {
-            commonWebpackConfig {
-                cssSupport.enabled = true
-            }
-        }
+    js {
+        moduleName = "kborsh"
+        browser()
+        nodejs()
     }
     android {
         publishLibraryVariants("release")
@@ -51,21 +50,22 @@ kotlin {
             kotlin.srcDir("src/commonJvmAndroid/kotlin")
         }
         val jvmTest by getting
-        val jsMain by getting
-        val jsTest by getting {
+        val jsMain by getting {
             dependencies {
-                implementation(kotlin("test-js"))
+                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
             }
         }
+        val jsTest by getting
         val androidMain by getting {
             kotlin.srcDir("src/commonJvmAndroid/kotlin")
             dependencies {
                 implementation("androidx.core:core-ktx:1.9.0")
             }
         }
-//        val androidTest by getting {
-//            kotlin.srcDir("src/jvmTest/kotlin")
-//        }
+        val androidTest by getting {
+            kotlin.srcDir("src/jvmTest/kotlin")
+            kotlin.srcDir("src/androidTest/kotlin")
+        }
     }
 }
 

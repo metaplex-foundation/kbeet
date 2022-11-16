@@ -40,13 +40,13 @@ interface ByteBuffer {
     fun array(): ByteArray
 
     private fun readIntoLong(count: Int, order: ByteOrder): Long =
-        ByteArray(Short.SIZE_BYTES).run { get(this); toLong(order)}
+        ByteArray(count).run { get(this); toLong(order)}
 
     private infix fun Long.sho(bits: Int): Long =
         if (order == ByteOrder.LITTLE_ENDIAN) this shl bits else this shr bits
 
     private fun ByteArray.toLong(order: ByteOrder): Long {
-        if (order == ByteOrder.LITTLE_ENDIAN) this.reverse()
+        if (order == ByteOrder.BIG_ENDIAN) this.reverse()
         var result = 0L
         indices.forEach { b -> result = result or (this[b].toLong() shl 8 * b) }
         return result
@@ -55,7 +55,7 @@ interface ByteBuffer {
     private fun Number.toByteArray(sizeBytes: Int): ByteArray =
         ByteArray(sizeBytes).apply {
             indices.forEach { b ->
-                put(((this@toByteArray.toLong() sho 8 * b) and 0xFF).toByte())
+                this[b] = ((this@toByteArray.toLong() sho 8 * b) and 0xFF).toByte()
             }
         }
 

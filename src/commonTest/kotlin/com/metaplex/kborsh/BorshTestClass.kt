@@ -17,6 +17,7 @@ import kotlinx.serialization.Serializable
  * including collections, optionals, and nested objects.
  */
 
+@Serializable
 enum class BorshTestEnum {
     ENUM1, ENUM2, ENUM3
 }

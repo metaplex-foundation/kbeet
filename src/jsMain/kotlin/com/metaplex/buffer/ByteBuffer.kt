@@ -7,19 +7,17 @@
 
 package com.metaplex.buffer
 
-import org.khronos.webgl.Uint8Array
-import org.khronos.webgl.get
-import org.khronos.webgl.set
+import org.khronos.webgl.*
 
 actual fun ByteBuffer.Companion.allocate(capacity: Int): ByteBuffer = JsByteBuffer(Uint8Array(capacity))
 actual fun ByteBuffer.Companion.wrap(array: ByteArray): ByteBuffer = JsByteBuffer(Uint8Array(array.toTypedArray()))
 
-class JsByteBuffer(val base: Uint8Array) : ByteBuffer {
+class JsByteBuffer(val buffer: Uint8Array) : ByteBuffer {
 
     private var byteOrder: ByteOrder = ByteOrder.LITTLE_ENDIAN
     private var position: Int = 0
 
-    override val capacity: Int get() = base.length
+    override val capacity: Int get() = buffer.length
     override val order: ByteOrder get() = byteOrder
 
     override fun order(order: ByteOrder): ByteBuffer {
@@ -27,12 +25,22 @@ class JsByteBuffer(val base: Uint8Array) : ByteBuffer {
         return this
     }
 
-    override fun get(): Byte = base[position++]
+    override fun get(): Byte {
+        val dataView = DataView(buffer.buffer, position++, 1)
+        return dataView.getInt8(0)
+    }
 
-    override fun put(byte: Byte): ByteBuffer = this.also { base[position++] = byte }
+//    override fun getInt(): Int {
+//        val dataView = DataView(buffer.buffer, position, Int.SIZE_BYTES)
+//        position += Int.SIZE_BYTES
+//        return dataView.getInt32(0, order == ByteOrder.LITTLE_ENDIAN).toInt()
+//    }
+
+    override fun put(byte: Byte): ByteBuffer = this.also {
+        val dataView = DataView(buffer.buffer, position++, 1)
+        dataView.setInt8(0, byte)
+    }
 
     override fun array(): ByteArray =
-        ByteArray(base.length).apply {
-            get(this)
-        }
+        Int8Array(buffer.buffer, 0, capacity).unsafeCast<ByteArray>()
 }

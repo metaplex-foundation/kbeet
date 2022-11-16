@@ -6,7 +6,7 @@
  */
 @file:OptIn(ExperimentalSerializationApi::class)
 
-package com.metaplex.borsh
+package com.metaplex.kborsh
 
 import com.metaplex.buffer.ByteBuffer
 import com.metaplex.buffer.ByteOrder
@@ -60,8 +60,6 @@ class BorshDecoder(val bytes: ByteArray) : AbstractDecoder() {
         val bytes = ByteArray(length)
         byteBuffer.get(bytes)
         return bytes.decodeToString().replace("\u0000", "")
-//        return CharArray(bytes).concatToString().replace("\u0000", "")
-//        return String(bytes, StandardCharsets.UTF_8).replace("\u0000", "")
     }
 }
 

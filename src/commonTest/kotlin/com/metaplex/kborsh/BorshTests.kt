@@ -7,7 +7,6 @@
 
 package com.metaplex.kborsh
 
-import com.metaplex.borsh.Borsh
 import com.metaplex.buffer.ByteBuffer
 import com.metaplex.buffer.ByteOrder
 import com.metaplex.buffer.allocate
@@ -271,8 +270,8 @@ class BorshTests {
         )
 
         // when
-        val encodedBorsh = Borsh.encodeToByteArray(BorshTestClass.serializer(), testClass)
-        val decodedObject = Borsh.decodeFromByteArray(BorshTestClass.serializer(), encodedBorsh)
+        val encodedBorsh = Borsh.encodeToByteArray(testClass)
+        val decodedObject = Borsh.decodeFromByteArray<BorshTestClass>(encodedBorsh)
 
         // then
         assertEquals(testClass, decodedObject)
@@ -293,8 +292,8 @@ class BorshTests {
         )
 
         // when
-        val encodedBorsh = Borsh.encodeToByteArray(BorshTestClass.serializer(), testClass)
-        val decodedObject = Borsh.decodeFromByteArray(BorshTestClass.serializer(), encodedBorsh)
+        val encodedBorsh = Borsh.encodeToByteArray(testClass)
+        val decodedObject = Borsh.decodeFromByteArray<BorshTestClass>(encodedBorsh)
 
         // then
         assertEquals(testClass, decodedObject)
