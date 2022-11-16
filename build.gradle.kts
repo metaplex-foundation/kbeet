@@ -6,7 +6,7 @@ plugins {
     signing
 }
 
-group = "com.metaplex.kborsh"
+group = "com.metaplex"
 version = "development"
 val libraryVersion = System.getenv("GITHUB_REF")?.split('/')?.last() ?: "development"
 
@@ -43,7 +43,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.8")
             }
         }
         val jvmMain by getting {
@@ -81,16 +80,16 @@ android {
 
 System.getenv("GITHUB_REPOSITORY")?.let {
 
-    val publishedGroupId = "com.metaplex"
-
-    project.group = publishedGroupId
-    project.version = libraryVersion
+//    val publishedGroupId = "com.metaplex"
+//
+//    project.group = publishedGroupId
+//    project.version = libraryVersion
 
     publishing {
-        publications.withType(MavenPublication::class) {
-            groupId = publishedGroupId
-            version = libraryVersion
-        }
+//        publications.withType(MavenPublication::class) {
+//            groupId = publishedGroupId
+//            version = libraryVersion
+//        }
 
         repositories {
             maven {
@@ -102,6 +101,6 @@ System.getenv("GITHUB_REPOSITORY")?.let {
     }
 }
 
-signing {
-    sign(publishing.publications)
-}
+//signing {
+//    sign(publishing.publications)
+//}

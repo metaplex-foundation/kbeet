@@ -30,12 +30,6 @@ class JsByteBuffer(val buffer: Uint8Array) : ByteBuffer {
         return dataView.getInt8(0)
     }
 
-//    override fun getInt(): Int {
-//        val dataView = DataView(buffer.buffer, position, Int.SIZE_BYTES)
-//        position += Int.SIZE_BYTES
-//        return dataView.getInt32(0, order == ByteOrder.LITTLE_ENDIAN).toInt()
-//    }
-
     override fun put(byte: Byte): ByteBuffer = this.also {
         val dataView = DataView(buffer.buffer, position++, 1)
         dataView.setInt8(0, byte)
