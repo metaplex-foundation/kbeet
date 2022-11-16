@@ -25,14 +25,14 @@ kotlin {
             useJUnit()
         }
     }
-    js {
-        moduleName = "kborsh"
-        browser()
-        nodejs()
-    }
     android {
         publishLibraryVariants("release")
     }
+//    js {
+//        moduleName = "kborsh"
+//        browser()
+//        nodejs()
+//    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -49,13 +49,6 @@ kotlin {
         val jvmMain by getting {
             kotlin.srcDir("src/commonJvmAndroid/kotlin")
         }
-        val jvmTest by getting
-        val jsMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
-            }
-        }
-        val jsTest by getting
         val androidMain by getting {
             kotlin.srcDir("src/commonJvmAndroid/kotlin")
             dependencies {
@@ -66,6 +59,13 @@ kotlin {
             kotlin.srcDir("src/jvmTest/kotlin")
             kotlin.srcDir("src/androidTest/kotlin")
         }
+        val jvmTest by getting
+//        val jsMain by getting {
+//            dependencies {
+//                implementation("org.jetbrains.kotlinx:kotlinx-nodejs:0.0.7")
+//            }
+//        }
+//        val jsTest by getting
     }
 }
 
