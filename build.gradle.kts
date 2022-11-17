@@ -85,11 +85,12 @@ System.getenv("GITHUB_REPOSITORY")?.let {
     println("++++ GITHUB_HEAD_REF = ${System.getenv("GITHUB_HEAD_REF")}")
 
     val publishedGroupId = "com.metaplex"
-    val isSnapshot = System.getenv("GITHUB_REF_TYPE") != "tag"
-    var libraryVersion = System.getenv("GITHUB_HEAD_REF")
-        ?: System.getenv("GITHUB_REF_NAME") ?: "development"
-
-    if (isSnapshot) libraryVersion += "-SNAPSHOT"
+    val libraryVersion =
+        (if (System.getenv("GITHUB_REF_TYPE") == "tag")
+            System.getenv("GITHUB_REF_NAME")
+        else
+            System.getenv("GITHUB_HEAD_REF")?.split('/')?.last() + "-SNAPSHOT"
+        ) ?: "development"
 
     println("PUBLISHING LIBRARY: $publishedGroupId:$libraryVersion")
 
