@@ -80,7 +80,7 @@ android {
 System.getenv("GITHUB_REPOSITORY")?.let {
 
     val publishedGroupId = "com.metaplex"
-    var libraryVersion = System.getenv("GITHUB_REF_NAME") ?: "development"
+    var libraryVersion = System.getenv("GITHUB_REF_NAME")?.split('/')?.last() ?: "development"
     val isSnapshot = System.getenv("GITHUB_REF_TYPE") != "tag"
 
     if (isSnapshot) libraryVersion += "-SNAPSHOT"
