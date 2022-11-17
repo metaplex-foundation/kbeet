@@ -8,7 +8,6 @@ plugins {
 
 group = "com.metaplex"
 version = "development"
-val libraryVersion = System.getenv("GITHUB_REF")?.split('/')?.last() ?: "development"
 
 repositories {
     google()
@@ -80,16 +79,20 @@ android {
 
 System.getenv("GITHUB_REPOSITORY")?.let {
 
-//    val publishedGroupId = "com.metaplex"
-//
-//    project.group = publishedGroupId
-//    project.version = libraryVersion
+    val publishedGroupId = "com.metaplex"
+    var libraryVersion = System.getenv("GITHUB_REF_NAME") ?: "development"
+    val isSnapshot = System.getenv("GITHUB_REF_TYPE") != "tag"
+
+    if (isSnapshot) libraryVersion += "-SNAPSHOT"
+
+    project.group = publishedGroupId
+    project.version = libraryVersion
 
     publishing {
-//        publications.withType(MavenPublication::class) {
-//            groupId = publishedGroupId
-//            version = libraryVersion
-//        }
+        publications.withType(MavenPublication::class) {
+            groupId = publishedGroupId
+            version = libraryVersion
+        }
 
         repositories {
             maven {
@@ -100,7 +103,3 @@ System.getenv("GITHUB_REPOSITORY")?.let {
         }
     }
 }
-
-//signing {
-//    sign(publishing.publications)
-//}
