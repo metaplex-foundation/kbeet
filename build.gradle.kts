@@ -83,13 +83,17 @@ System.getenv("GITHUB_REPOSITORY")?.let {
     println("++++ GITHUB_REF = ${System.getenv("GITHUB_REF")}")
     println("++++ GITHUB_REF_NAME = ${System.getenv("GITHUB_REF_NAME")}")
     println("++++ GITHUB_REF_TYPE = ${System.getenv("GITHUB_REF_TYPE")}")
+    println("++++ GITHUB_HEAD_REF = ${System.getenv("GITHUB_HEAD_REF")}")
     println("++++ GITHUB_BASE_REF = ${System.getenv("GITHUB_BASE_REF")}")
 
     val publishedGroupId = "com.metaplex"
-    var libraryVersion = System.getenv("GITHUB_REF_NAME")?.split('/')?.last() ?: "development"
     val isSnapshot = System.getenv("GITHUB_REF_TYPE") != "tag"
+    var libraryVersion = System.getenv("GITHUB_HEAD_REF")
+        ?: System.getenv("GITHUB_REF_NAME")?.split('/')?.last() ?: "development"
 
     if (isSnapshot) libraryVersion += "-SNAPSHOT"
+
+    println("PUBLISHING LIBRARY: $publishedGroupId:$libraryVersion")
 
     project.group = publishedGroupId
     project.version = libraryVersion
