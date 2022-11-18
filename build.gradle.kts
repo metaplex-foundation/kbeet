@@ -79,18 +79,14 @@ android {
 
 System.getenv("GITHUB_REPOSITORY")?.let {
 
-    println("++++++++++++++ LOOK HERE GITHUB DEBUG PRINTS ++++++++++++++++++++")
-    println("++++ GITHUB_REF_NAME = ${System.getenv("GITHUB_REF_NAME")}")
-    println("++++ GITHUB_REF_TYPE = ${System.getenv("GITHUB_REF_TYPE")}")
-    println("++++ GITHUB_HEAD_REF = ${System.getenv("GITHUB_HEAD_REF")}")
-
     val publishedGroupId = "com.metaplex"
+    val branchName = System.getenv("GITHUB_HEAD_REF")
+        ?: System.getenv("GITHUB_REF_NAME")?.split('/')?.last()
     val libraryVersion =
-        (if (System.getenv("GITHUB_REF_TYPE") == "tag")
+        if (System.getenv("GITHUB_REF_TYPE") == "tag")
             System.getenv("GITHUB_REF_NAME")
         else
-            System.getenv("GITHUB_HEAD_REF")?.split('/')?.last() + "-SNAPSHOT"
-        ) ?: "development"
+            "$branchName-SNAPSHOT"
 
     println("PUBLISHING LIBRARY: $publishedGroupId:$libraryVersion")
 
